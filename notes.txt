@@ -1,1 +1,6 @@
 smoothState.js, fitText.js
+
+Gulp
+Slim
+CoffeeScript
+Sass
