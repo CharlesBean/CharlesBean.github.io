@@ -1,44 +1,33 @@
-var cubes, list, math, num, number, opposite, race, square,
-  slice = [].slice;
+var start;
 
-number = 42;
-
-opposite = true;
-
-if (opposite) {
-  number = -42;
-}
-
-square = function(x) {
-  return x * x;
+start = function() {
+  var canvas, circle, ctx, stage;
+  canvas = $("#pageCanvas")[0];
+  ctx = canvas.getContext("2d");
+  ctx.canvas.width = window.innerWidth;
+  ctx.canvas.height = window.innerHeight;
+  stage = new createjs.Stage("pageCanvas");
+  circle = new createjs.Shape();
+  circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
+  circle.x = window.innerWidth / 2;
+  circle.y = window.innerHeight / 2;
+  stage.addChild(circle);
+  stage.enableMouseOver(20);
+  circle.addEventListener("mouseout", function() {
+    return circle.graphics.clear().beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
+  });
+  circle.addEventListener("mouseover", function() {
+    return circle.graphics.clear().beginFill("White").drawCircle(0, 0, 50);
+  });
+  createjs.Tween.get(circle, {
+    loop: true
+  }).to({
+    alpha: 0
+  }, 1000, createjs.Ease.getPowInOut(5));
+  createjs.Ticker.setFPS(60);
+  return createjs.Ticker.addEventListener("tick", stage);
 };
 
-list = [1, 2, 3, 4, 5];
-
-math = {
-  root: Math.sqrt,
-  square: square,
-  cube: function(x) {
-    return x * square(x);
-  }
-};
-
-race = function() {
-  var runners, winner;
-  winner = arguments[0], runners = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-  return print(winner, runners);
-};
-
-if (typeof elvis !== "undefined" && elvis !== null) {
-  alert("I knew it!");
-}
-
-cubes = (function() {
-  var i, len, results;
-  results = [];
-  for (i = 0, len = list.length; i < len; i++) {
-    num = list[i];
-    results.push(math.cube(num));
-  }
-  return results;
-})();
+$(window).load(function() {
+  return start();
+});
